@@ -1,22 +1,20 @@
 import React from 'react';
-import GameCard from '../GameCard/GameCard';
+import styles from './CardList.css'
+import GameCard from '../gamecard/GameCard';
 
 const CardList = ({ matches }) => {
 
 	return (	
-		<div>
+		<div className='flex flex-wrap'>
 			{	
 			matches.map((match, i) => {
-				if (i > 90 && matches[i].matchday === 1) {
 					return (
 					 	<GameCard 
 						key={i}
-						group={matches[i].group}
-						matchday={matches[i].matchday}
-						homeTeam={matches[i].homeTeam.name} 
-						awayTeam={matches[i].awayTeam.name} />
+						group={matches[i].match.group}
+						homeTeam={matches[i].match.homeTeam.name} 
+						awayTeam={matches[i].match.awayTeam.name} />
 						)
-					}
 				})		
 			}
 		</div>

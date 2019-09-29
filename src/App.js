@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
-import Background from './components/Background/Background';
-import Navigation from './components/Navigation/Navigation';
-import Logo from './components/Logo/Logo';
+import Background from './components/background/Background';
+import Navigation from './components/navigation/Navigation';
 import FootballAPI from './containers/FootballAPI';
 
 
@@ -13,12 +12,15 @@ class App extends Component {
     		<div>
     			<Navigation />
        			<Background />
-       			<Logo />
        			<FootballAPI />
-       			
     		</div>
   		);
 	}
 }
 
 export default App;
+
+/*
+
+
+*/

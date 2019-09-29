@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -22,24 +22,45 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function DialogSelect({handleClick}) {
+export default function DialogSelect({competitions, handleMenuChanges}) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     open: false,
-    League: { name: '' },
-    Fixture: { number: '' }
+    league:'',
+    fixture:'',
+    competitionId: 0,
+    area: ''
   });
 
-  const handleChangeLeague = name => event => {
-    setState({ ...state, [name]: String(event.target.value) });
-  };
+  const handleChangeLeague = (event) => {
+      setState({...state, 
+        league: event.target.value.name,
+        competitionId: event.target.value.id,
+        area: event.target.value.area
+      });
+      // console.log(event.target)
+     }
+  
 
-    const handleChangeFixture = number => event => {
-    setState({ ...state, [number]: Number(event.target.value) });
-  };
+  const handleChangeFixture = (event) => {
+    setState({...state, fixture: event.target.value});
+     }
+
+  const handleClickOk = (event) => {
+    handleMenuChanges({
+      league:state.league,
+      fixture: state.fixture,
+      competitionId: state.competitionId,
+      area: state.area
+    })
+    // console.log('handleClickOk',
+    //   state.fixture,
+    //   state.competitionId)
+  }
 
   const handleClickOpen = () => {
     setState({ ...state, open: true });
+    // console.log('competitions', competitions)
   };
 
   const handleClose = () => {
@@ -56,21 +77,28 @@ export default function DialogSelect({handleClick}) {
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="age-native-simple">League</InputLabel>
               <Select
-                native
-                value={state.League}
-                onChange={handleChangeLeague ('League')}
-               // input={<Input id="age-native-simple" />}
+                value={state.league}
+                onChange={handleChangeLeague}
+                input={<Input id="name" />}
               >
-                <option value={1}>UCL</option>
-                <option value={2}>Premier League</option>
+             {competitions.map((competition, i) => (
+                  <option 
+                  key={i}
+                  value={{
+                    name: competition.name,
+                    id: competition.id,
+                    area: competition.area.name
+                  }}
+                  >{competition.name} - {competition.area.name}</option>
+                  ))}
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="age-simple">Fixture</InputLabel>
               <Select
-                value={state.age}
-                onChange={handleChangeFixture ('Fixture')}
-               // input={<Input id="age-native-simple" />}
+                value={state.fixture}
+                onChange={handleChangeFixture}
+                input={<Input id="age-native-simple" />}
               >
                 <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={2}>2</MenuItem>
@@ -84,13 +112,14 @@ export default function DialogSelect({handleClick}) {
             Cancel
           </Button>
           <Button 
-          onClick={handleClose} 
-          color="primary"
-          handleclick={handleClick}>
-            Ok
-          </Button>
+          onClick=
+          {(event) => {
+            handleClose(event)
+            handleClickOk(event)}} 
+          color="primary">
+          Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+} 
